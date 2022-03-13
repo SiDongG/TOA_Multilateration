@@ -30,13 +30,11 @@ peak_index_r=find(cross_r==max(cross_r));
 cross_r_PHAT=1e3*abs(fftshift(ifft((fft(signal_r).*conj(fft(signal)))./(abs(fft(signal_r)).*abs(fft(signal))))));
 peak_index_PHAT=find(cross_r_PHAT==max(cross_r_PHAT));
 
-signal1=path0+path2(1:120006)+path3(1:120006)+path4(1:120006);
-cross=fftshift(ifft(fft(signal).*conj(fft(signal))));
-peak_index=find(cross==max(cross));
+signal_r=path0+path2(1:120006)+path3(1:120006)+path4(1:120006);
 cross_r=fftshift(ifft(fft(signal_r).*conj(fft(signal))));
-peak_index_r=find(cross_r==max(cross_r));
+peak_index_r2=find(cross_r==max(cross_r));
 cross_r_PHAT=1e3*abs(fftshift(ifft((fft(signal_r).*conj(fft(signal)))./(abs(fft(signal_r)).*abs(fft(signal))))));
-peak_index_PHAT=find(cross_r_PHAT==max(cross_r_PHAT));
+peak_index_PHAT2=find(cross_r_PHAT==max(cross_r_PHAT));
 
 
 
