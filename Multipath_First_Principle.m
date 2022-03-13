@@ -41,11 +41,11 @@ signal_r=path0+path1(1:120006)+path2(1:120006)+path3(1:120006)+path4(1:120006);
 subplot(3,3,4)
 plot(1:length(signal_r),signal_r);
 
-cross2=fftshift(ifft(fft(signal).*conj(fft(signal))));
+cross2=fftshift(ifft(fft(signal_r).*conj(fft(signal))));
 subplot (3,3,5)
 plot(1:length(cross2),cross2);
 
-xcor_PHAT2=1e3*abs(fftshift(ifft((fft(signal).*conj(fft(signal_r)))./(abs(fft(signal)).*abs(fft(signal_r))))));
+xcor_PHAT2=1e3*abs(fftshift(ifft((fft(signal_r).*conj(fft(signal)))./(abs(fft(signal_r)).*abs(fft(signal))))));
 
 subplot (3,3,6)
 plot(1:length(xcor_PHAT2),xcor_PHAT2);
