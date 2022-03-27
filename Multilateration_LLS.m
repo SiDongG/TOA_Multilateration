@@ -176,10 +176,10 @@ if Mode==3
        d2^2-x2^2-y2^2;
        d3^2-x3^2-y3^2;
        d4^2-x4^2-y4^2];
-    W=(1/4)*[1/rms(Noise),0,0,0;
-         0,1/rms(Noise),0,0;
-         0,0,1/rms(Noise),0;
-         0,0,0,1/rms(Noise)];
+    W=(1/4)*[1/(d1*var(Noise)),0,0,0;
+         0,1/(d1*var(Noise)),0,0;
+         0,0,1/(d1*var(Noise)),0;
+         0,0,0,1/(d1*var(Noise))];
     Theta=inv(A.'*W*A)*A.'*W*b;
     X=Theta(1);
     Y=Theta(2);
