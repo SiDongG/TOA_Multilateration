@@ -1,13 +1,14 @@
+
 function [X,Y]=Multilateration_LLS(Mode,rx,ry)
 % Mode: 1=LLS, 2=LLS_Direct, 3=WLLS, 4=2SWLLS
-x1=-10;y1=-10;z1=0;
-x2=10;y2=-10;z2=0;
-x3=10;y3=10;z3=0;
-x4=-10;y4=10;z4=0;
+x1=1;y1=1;z1=0;
+x2=-1;y2=1;z2=0;
+x3=-1;y3=-1;z3=0;
+x4=1;y4=-1;z4=0;
 
 rz=0;
 rxULA = phased.OmnidirectionalMicrophoneElement;  %Same location as emitter
-rxpos1 = [rx;ry;rz+0.0001];
+rxpos1 = [rx;ry;rz+0.0000001];
 rxvel1 = [0;0;0];
 rxax1 = azelaxes(0,0);
 rxpos2 = [x1;y1;z1];  %Reference Receiver 
@@ -28,13 +29,13 @@ srcvel = [0;0;0];
 srcax = azelaxes(0,0);
 srcULA = phased.OmnidirectionalMicrophoneElement;
 
-Carrier_Fre = 96e3;             % 20 kHz
-Propagation_Speed = 340;            % 340 m/s
-Operating_range = 34;            % 34 m
+Carrier_Fre = 96e3;             % Hz
+Propagation_Speed = 340;            % m/s
+Operating_range = 68;            % m
 pri = (2*Operating_range)/Propagation_Speed;
 prf = 1/pri;
-bw = 5e3;              % 5 kHz
-fs = 9.6e4;            % 96 kHz
+bw = 5e3;              % Hz
+fs = 9.6e4;            % Hz
 waveform = phased.LinearFMWaveform('SampleRate',fs,'SweepBandwidth',bw,'PRF',prf,'PulseWidth',pri/10);
 signal = waveform();
 
@@ -66,7 +67,7 @@ channel5 = phased.WidebandFreeSpace('PropagationSpeed',Propagation_Speed,...
 [~,ang2_transmit] = rangeangle(rxpos2,srcpos,srcax);
 [~,ang3_transmit] = rangeangle(rxpos3,srcpos,srcax);
 [~,ang4_transmit] = rangeangle(rxpos4,srcpos,srcax);
-[~,ang5_transmit] = rangeangle(rxpos4,srcpos,srcax);
+[~,ang5_transmit] = rangeangle(rxpos5,srcpos,srcax);
 
 sig_transmit = radiator(signal,[ang1_transmit ang2_transmit ang3_transmit ang4_transmit ang5_transmit]);
 
@@ -88,33 +89,50 @@ sigr3 = collector3(sigp3,ang3_receive);
 sigr4 = collector4(sigp4,ang4_receive);
 sigr5 = collector5(sigp5,ang5_receive);
 
+%Insert a Pesudo-random noise 
+nr=randn(1,length(signal));
+ni=randn(1,length(signal));
+Noise=(1/40000)*(sqrt(2)/2)*(nr+1i*ni);
 
-xcor12_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr2)))./(abs(fft(sigr1)).*abs(fft(sigr2))))));
-xcor13_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr3)))./(abs(fft(sigr1)).*abs(fft(sigr3))))));
-xcor14_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr4)))./(abs(fft(sigr1)).*abs(fft(sigr4))))));
-xcor15_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr5)))./(abs(fft(sigr1)).*abs(fft(sigr5))))));
+sigr2 = sigr2+Noise.';
+sigr3 = sigr3+Noise.';
+sigr4 = sigr4+Noise.';
+sigr5 = sigr5+Noise.';
+
+xcor01_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr2)))./(abs(fft(sigr1)).*abs(fft(sigr2))))));
+xcor02_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr3)))./(abs(fft(sigr1)).*abs(fft(sigr3))))));
+xcor03_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr4)))./(abs(fft(sigr1)).*abs(fft(sigr4))))));
+xcor04_PHAT=abs(fftshift(ifft((fft(sigr1).*conj(fft(sigr5)))./(abs(fft(sigr1)).*abs(fft(sigr5))))));
 
 Peak_Value=zeros(1,4);
 Estimated_difference=zeros(1,4);
 
-for i=1:length(xcor12_PHAT)
-    if xcor12_PHAT(i)>Peak_Value(1)
-        Estimated_difference(1)=(i-0.1*fs-1);
-        Peak_Value(1)=xcor12_PHAT(i);
+for i=1:length(xcor01_PHAT)
+    if xcor01_PHAT(i)>Peak_Value(1)
+        Estimated_difference(1)=(i-0.2*fs-1);
+        Peak_Value(1)=xcor01_PHAT(i);
     end
-    if xcor13_PHAT(i)>Peak_Value(2)
-        Estimated_difference(2)=(i-0.1*fs-1);
-        Peak_Value(2)=xcor13_PHAT(i);
+    if xcor02_PHAT(i)>Peak_Value(2)
+        Estimated_difference(2)=(i-0.2*fs-1);
+        Peak_Value(2)=xcor02_PHAT(i);
     end
-    if xcor14_PHAT(i)>Peak_Value(3)
-        Estimated_difference(3)=(i-0.1*fs-1);
-        Peak_Value(3)=xcor14_PHAT(i);
+    if xcor03_PHAT(i)>Peak_Value(3)
+        Estimated_difference(3)=(i-0.2*fs-1);
+        Peak_Value(3)=xcor03_PHAT(i);
     end
-    if xcor15_PHAT(i)>Peak_Value(4)
-        Estimated_difference(4)=(i-0.1*fs-1);
-        Peak_Value(4)=xcor15_PHAT(i);
+    if xcor04_PHAT(i)>Peak_Value(4)
+        Estimated_difference(4)=(i-0.2*fs-1);
+        Peak_Value(4)=xcor04_PHAT(i);
     end
 end
+subplot(2,2,1)
+plot(1:length(xcor01_PHAT),xcor01_PHAT)
+subplot(2,2,2)
+plot(1:length(xcor02_PHAT),xcor02_PHAT)
+subplot(2,2,3)
+plot(1:length(xcor03_PHAT),xcor03_PHAT)
+subplot(2,2,4)
+plot(1:length(xcor04_PHAT),xcor04_PHAT)
 
 Estimated_difference=Estimated_difference/fs;
 Distance=Estimated_difference*Propagation_Speed;
@@ -135,14 +153,19 @@ if Mode==1
     Y=Theta(2);
 end
 
-%if Mode==2
-    
-
-
-
-
-
-
+if Mode==2
+    A=[-2*x1, -2*y1, 1;
+       -2*x2, -2*y2, 1;
+       -2*x3, -2*y3, 1;
+       -2*x4, -2*y4, 1];
+    b=[d1^2-x1^2-y1^2;
+       d2^2-x2^2-y2^2;
+       d3^2-x3^2-y3^2;
+       d4^2-x4^2-y4^2];
+    Theta=inv(A.'*A)*A.'*b;
+    X=Theta(1);
+    Y=Theta(2);
+end
 
 
 
