@@ -1,10 +1,10 @@
 
 function [X,Y]=Multilateration_LLS(Mode,rx,ry)
 % Mode: 1=LLS, 2=LLS_Direct, 3=WLLS, 4=2SWLLS
-x1=1;y1=1;z1=0;
-x2=-1;y2=1;z2=0;
-x3=-1;y3=-1;z3=0;
-x4=1;y4=-1;z4=0;
+x1=0.1;y1=0.1;z1=0;
+x2=-0.1;y2=0.1;z2=0;
+x3=-0.1;y3=-0.1;z3=0;
+x4=0.1;y4=-0.1;z4=0;
 
 rz=0;
 rxULA = phased.OmnidirectionalMicrophoneElement;  %Same location as emitter
@@ -167,6 +167,20 @@ if Mode==2
     Y=Theta(2);
 end
 
-
-
+if Mode==3
+    A=[-2*x1, -2*y1, 1;
+       -2*x2, -2*y2, 1;
+       -2*x3, -2*y3, 1;
+       -2*x4, -2*y4, 1];
+    b=[d1^2-x1^2-y1^2;
+       d2^2-x2^2-y2^2;
+       d3^2-x3^2-y3^2;
+       d4^2-x4^2-y4^2];
+    W=(1/4)*[1/rms(Noise),0,0,0;
+         0,1/rms(Noise),0,0;
+         0,0,1/rms(Noise),0;
+         0,0,0,1/rms(Noise)];
+    Theta=inv(A.'*W*A)*A.'*W*b;
+    X=Theta(1);
+    Y=Theta(2);
 end
