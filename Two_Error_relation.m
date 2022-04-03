@@ -7,10 +7,10 @@ pri = (2*Operating_range)/Propagation_Speed;
 prf = 1/pri;
 bw = 5e3;              % Hz
 fs = 9.6e4;
-var_d=zeros(1,8);
-for i=1:4:29
+var_d=zeros(1,10);
+for i=1:4:37
     sum=0;
-    for k=1:10
+    for k=1:100
         rx=i;ry=0;rz=0;
         rxULA = phased.OmnidirectionalMicrophoneElement;
         rxpos1 = [x1;y1;z1];
