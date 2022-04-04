@@ -177,10 +177,37 @@ if Mode==3
        d3^2-x3^2-y3^2;
        d4^2-x4^2-y4^2];
     W=(1/4)*[1/(d1*var(Noise)),0,0,0;
-         0,1/(d1*var(Noise)),0,0;
-         0,0,1/(d1*var(Noise)),0;
-         0,0,0,1/(d1*var(Noise))];
+         0,1/(d2*var(Noise)),0,0;
+         0,0,1/(d3*var(Noise)),0;
+         0,0,0,1/(d4*var(Noise))];
     Theta=inv(A.'*W*A)*A.'*W*b;
     X=Theta(1);
     Y=Theta(2);
+end
+if Mode==4
+    b=[d1^2-x1^2-y1^2;
+       d2^2-x2^2-y2^2;
+       d3^2-x3^2-y3^2;
+       d4^2-x4^2-y4^2];
+    Z=[1,0;0,1;1,1];
+    A=[-2*x1, -2*y1, 1;
+       -2*x2, -2*y2, 1;
+       -2*x3, -2*y3, 1;
+       -2*x4, -2*y4, 1];
+    W=(1/4)*[1/(d1*var(Noise)),0,0,0;
+         0,1/(d2*var(Noise)),0,0;
+         0,0,1/(d3*var(Noise)),0;
+         0,0,0,1/(d4*var(Noise))];
+    Theta1=inv(A.'*A)*A.'*b;
+    X1=Theta1(1);
+    Y1=Theta1(2);
+    M=[2*X1,0,0;
+       0,2*Y1,0;
+       0,0,1];
+    h=[X1,Y1,X1^2+Y1^2];
+    T=inv(M*(inv(A.'*W*A)*M));
+    Theta=inv(Z.'*T*Z)*Z.'*T*h.';
+    X=sqrt(Theta(1));
+    Y=sqrt(Theta(2));
+end
 end
