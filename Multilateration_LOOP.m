@@ -1,11 +1,12 @@
 
-Error=zeros(3,9);
-for Mode=1:3
+Error=zeros(4,10);
+y=0;
+for Mode=1:4
     index=1;
-    for r=5:5:45
+    disp(Mode)
+    for x=2:2:20
         sum=0;
-        for x=-r:r/10:r
-            y=sqrt(r^2-x^2);
+        for i=1:10
             [X,Y]=Multilateration_LLS(Mode,x,y);
             sum=(X-x)^2+(Y-y)^2;
         end
@@ -13,4 +14,14 @@ for Mode=1:3
         index=index+1;
     end
 end        
+
+figure;
+hold on; box on;
+plot(2:2:20,Error(1,:),'k-','LineWidth',1);
+plot(2:2:20,Error(2,:),'g-','LineWidth',1);
+plot(2:2:20,Error(3,:),'r-','LineWidth',1);
+plot(2:2:20,Error(4,:),'b-','LineWidth',1);
+
+legend('LLS1','LLS2','WLLS','2SWLLS')
+
         

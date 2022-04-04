@@ -125,14 +125,14 @@ for i=1:length(xcor01_PHAT)
         Peak_Value(4)=xcor04_PHAT(i);
     end
 end
-subplot(2,2,1)
-plot(1:length(xcor01_PHAT),xcor01_PHAT)
-subplot(2,2,2)
-plot(1:length(xcor02_PHAT),xcor02_PHAT)
-subplot(2,2,3)
-plot(1:length(xcor03_PHAT),xcor03_PHAT)
-subplot(2,2,4)
-plot(1:length(xcor04_PHAT),xcor04_PHAT)
+%subplot(2,2,1)
+%plot(1:length(xcor01_PHAT),xcor01_PHAT)
+%subplot(2,2,2)
+%plot(1:length(xcor02_PHAT),xcor02_PHAT)
+%subplot(2,2,3)
+%plot(1:length(xcor03_PHAT),xcor03_PHAT)
+%subplot(2,2,4)
+%plot(1:length(xcor04_PHAT),xcor04_PHAT)
 
 Estimated_difference=Estimated_difference/fs;
 Distance=Estimated_difference*Propagation_Speed;
@@ -140,7 +140,7 @@ d1=Distance(1);
 d2=Distance(2);
 d3=Distance(3);
 d4=Distance(4);
-
+% Substract Form LLS
 if Mode==1
     H=[x1-x2,y1-y2;
     x1-x3,y1-y3;
@@ -152,7 +152,7 @@ if Mode==1
     X=Theta(1);
     Y=Theta(2);
 end
-
+% Direct Form LLS
 if Mode==2
     A=[-2*x1, -2*y1, 1;
        -2*x2, -2*y2, 1;
@@ -166,7 +166,7 @@ if Mode==2
     X=Theta(1);
     Y=Theta(2);
 end
-
+% WLLS
 if Mode==3
     A=[-2*x1, -2*y1, 1;
        -2*x2, -2*y2, 1;
@@ -184,7 +184,7 @@ if Mode==3
     X=Theta(1);
     Y=Theta(2);
 end
-
+% 2-Step WLLS
 if Mode==4
     b=[d1^2-x1^2-y1^2;
        d2^2-x2^2-y2^2;
@@ -211,7 +211,7 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
-
+% AML 
 if Mode==5
     A=[-2*x1, -2*y1, 1;
        -2*x2, -2*y2, 1;
@@ -236,4 +236,27 @@ if Mode==5
     Theta=0.5*inv(H.'*H)*H.'*x;
     X=Theta(1);
     Y=Theta(2);
+end
+% AML Direct Form 
+if Mode==6
+    A=[-2*x1, -2*y1, 1;
+       -2*x2, -2*y2, 1;
+       -2*x3, -2*y3, 1;
+       -2*x4, -2*y4, 1];
+    b=[d1^2-x1^2-y1^2;
+       d2^2-x2^2-y2^2;
+       d3^2-x3^2-y3^2;
+       d4^2-x4^2-y4^2]; 
+    Theta1=inv(A.'*A)*A.'*b;
+    X1=Theta1(1);
+    Y1=Theta1(2);
+    r1=sqrt((X1-x1)^2+(Y1-y1)^2);
+    r2=sqrt((X1-x2)^2+(Y1-y2)^2);
+    r3=sqrt((X1-x3)^2+(Y1-y3)^2);
+    r4=sqrt((X1-x4)^2+(Y1-y4)^2);
+    Sum1=(-r1*x1+d1*x1)/r1+(-r2*x2+d2*x2)/r2+(-r3*x3+d3*x3)/r3+(-r4*x4+d4*x4)/r4;
+    Sum2=(d1-r1)/r1+(d2-r2)/r2+(d3-r3)/r3+(d4-r4)/r4;
+    X=Sum1/Sum2;
+    Y=0;
+end
 end
