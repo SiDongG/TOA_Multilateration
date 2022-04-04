@@ -184,6 +184,7 @@ if Mode==3
     X=Theta(1);
     Y=Theta(2);
 end
+
 if Mode==4
     b=[d1^2-x1^2-y1^2;
        d2^2-x2^2-y2^2;
@@ -210,4 +211,29 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
+
+if Mode==5
+    A=[-2*x1, -2*y1, 1;
+       -2*x2, -2*y2, 1;
+       -2*x3, -2*y3, 1;
+       -2*x4, -2*y4, 1];
+    b=[d1^2-x1^2-y1^2;
+       d2^2-x2^2-y2^2;
+       d3^2-x3^2-y3^2;
+       d4^2-x4^2-y4^2]; 
+    Theta1=inv(A.'*A)*A.'*b;
+    X1=Theta1(1);
+    Y1=Theta1(2);
+    r1=sqrt((X1-x1)^2+(Y1-y1)^2);g1=(X1-x1)/(r1*(r1+d1));h1=(Y1-y1)/(r1*(r1+d1));
+    r2=sqrt((X1-x2)^2+(Y1-y2)^2);g2=(X1-x2)/(r2*(r2+d2));h2=(Y1-y2)/(r2*(r2+d2));
+    r3=sqrt((X1-x3)^2+(Y1-y3)^2);g3=(X1-x3)/(r3*(r3+d3));h3=(Y1-y3)/(r3*(r3+d3));
+    r4=sqrt((X1-x4)^2+(Y1-y4)^2);g4=(X1-x4)/(r4*(r4+d4));h4=(Y1-y4)/(r4*(r4+d4));
+    H=[g1*x1+g2*x2+g3*x3+g4*x4,g1*y1+g2*y2+g3*y3+g4*y4;
+       h1*x1+h2*x2+h3*x3+h4*x4,h1*y1+h2*y2+h3*y3+h4*y4];
+    k=X1^2+Y1^2;k1=x1^2+y1^2;k2=x2^2+y2^2;k3=x3^2+y3^2;k4=x4^2+y4^2;
+    x=[g1*(k+k1-d1^2)+g2*(k+k2-d2^2)+g3*(k+k3-d3^2)+g4*(k+k4-d4^2);
+       h1*(k+k1-d1^2)+h2*(k+k2-d2^2)+h3*(k+k3-d3^2)+h4*(k+k4-d4^2)];
+    Theta=0.5*inv(H.'*H)*H.'*x;
+    X=Theta(1);
+    Y=Theta(2);
 end
