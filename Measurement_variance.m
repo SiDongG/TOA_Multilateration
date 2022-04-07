@@ -9,11 +9,12 @@ fs = 9.6e4;
 var_d=zeros(1,15);
 SNR_d=zeros(1,15);
 total_d=zeros(1,15);
-Num_loop=10;
+Num_loop=1;
 for loop=1:Num_loop
-    for i=2:2:30
+    for i=10
         disp(i)
         Measured_distance=zeros(1,100);
+        count=1;
         for k=1:200
             rx=i;ry=0;rz=0;
             rxULA = phased.OmnidirectionalMicrophoneElement;
@@ -56,12 +57,14 @@ for loop=1:Num_loop
 
             Measured_distance(k)=Distance;
             if k==200
-                var_d(i/2)=var(Measured_distance);
+                var_d(count)=var(Measured_distance);
             end
         end
         total_d=total_d+var_d;
+        count=count+1;
     end
 end
+histogram(Measured_distance)
 total_d=total_d/Num_loop;
 
 %Result1=1e-4*[0.0043    0.0322    0.0282    0.0754    0.1371    0.1835    0.2139    0.2555    0.2824    0.3665    0.4889

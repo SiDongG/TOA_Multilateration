@@ -168,6 +168,7 @@ if Mode==2
 end
 % WLLS
 if Mode==3
+    Var=1.2242e-05;
     A=[-2*x1, -2*y1, 1;
        -2*x2, -2*y2, 1;
        -2*x3, -2*y3, 1;
@@ -176,10 +177,10 @@ if Mode==3
        d2^2-x2^2-y2^2;
        d3^2-x3^2-y3^2;
        d4^2-x4^2-y4^2];
-    W=(1/4)*[1/(d1*var(Noise)),0,0,0;
-         0,1/(d2*var(Noise)),0,0;
-         0,0,1/(d3*var(Noise)),0;
-         0,0,0,1/(d4*var(Noise))];
+    W=(1/4)*[1/(d1^2*Var),0,0,0;
+         0,1/(d2^2*Var),0,0;
+         0,0,1/(d3^2*Var),0;
+         0,0,0,1/(d4^2*Var)];
     Theta=inv(A.'*W*A)*A.'*W*b;
     X=Theta(1);
     Y=Theta(2);
@@ -195,10 +196,10 @@ if Mode==4
        -2*x2, -2*y2, 1;
        -2*x3, -2*y3, 1;
        -2*x4, -2*y4, 1];
-    W=(1/4)*[1/(d1*var(Noise)),0,0,0;
-         0,1/(d2*var(Noise)),0,0;
-         0,0,1/(d3*var(Noise)),0;
-         0,0,0,1/(d4*var(Noise))];
+    W=(1/4)*[1/(d1^2*var(Noise)),0,0,0;
+         0,1/(d2^2*var(Noise)),0,0;
+         0,0,1/(d3^2*var(Noise)),0;
+         0,0,0,1/(d4^2*var(Noise))];
     Theta1=inv(A.'*A)*A.'*b;
     X1=Theta1(1);
     Y1=Theta1(2);
