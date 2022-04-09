@@ -205,7 +205,7 @@ if Mode==4
     M=[2*X1,0,0;
        0,2*Y1,0;
        0,0,1];
-    h=[X1,Y1,X1^2+Y1^2];
+    h=[X1^2,Y1^2,X1^2+Y1^2];
     T=inv(M*(inv(A.'*W*A)*M));
     Theta=inv(Z.'*T*Z)*Z.'*T*h.';
     X=sqrt(Theta(1));

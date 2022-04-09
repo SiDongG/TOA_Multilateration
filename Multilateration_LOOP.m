@@ -1,14 +1,15 @@
 
 Error=zeros(4,5);
-y=0;
+y=1;
 Var=1e-4*[0.0017968    0.0122    0.032401    0.085216    0.13898]; 
 for Mode=1:4
     index=1;
     disp(Mode)
-    for x=2:2:10
+    for position=2:2:10
+        x=sqrt(position^2-y^2);
         sum=0;
-        var=Var(x/2);
-        for i=1:10
+        var=Var(position/2);
+        for i=1:100
             [X,Y]=Multilateration_LLS(Mode,x,y,var);
             sum=(X-x)^2+(Y-y)^2;
         end
