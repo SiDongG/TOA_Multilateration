@@ -89,4 +89,15 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
+% Cramer-Rao Lower Bound
+if Mode==5
+    Fisher=zeros(2,2);
+    Fisher(1,1)=(rx-x1)^2/(variance*r1)+(rx-x2)^2/(variance*r2)+(rx-x3)^2/(variance*r3)+(rx-x4)^2/(variance*r4);
+    Fisher(1,2)=(rx-x1)*(ry-y1)/(variance*r1)+(rx-x2)*(ry-y2)/(variance*r2)+(rx-x3)*(ry-y3)/(variance*r3)+(rx-x4)*(ry-y4)/(variance*r4);
+    Fisher(2,1)=Fisher(1,2);
+    Fisher(2,2)=(ry-y1)^2/(variance*r1)+(ry-y2)^2/(variance*r2)+(ry-y3)^2/(variance*r3)+(ry-y4)^2/(variance*r4);
+    Fisher_inv=inv(Fisher);
+    X=Fisher_inv(1,1);
+    Y=Fisher_inv(2,2);
+end
 end
