@@ -96,8 +96,41 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
+% if Mode==5
+%     b=[d1^2-x1^2-y1^2;
+%        d2^2-x2^2-y2^2;
+%        d3^2-x3^2-y3^2;
+%        d4^2-x4^2-y4^2];
+%     Z=[1,0;0,1;1,1];
+%     A=[-2*x1, -2*y1, 1;
+%        -2*x2, -2*y2, 1;
+%        -2*x3, -2*y3, 1;
+%        -2*x4, -2*y4, 1];
+%     W=(1/4)*[1/(d1^2*Var1),0,0,0;
+%          0,1/(d2^2*Var2),0,0;
+%          0,0,1/(d3^2*Var3),0;
+%          0,0,0,1/(d4^2*Var4)];
+%     Theta1=inv(A.'*W*A)*A.'*W*b;
+%     X1=Theta1(1);
+%     Y1=Theta1(2);
+%     M=[2*X1,0,0;
+%        0,2*Y1,0;
+%        0,0,1];
+%     h=[X1^2,Y1^2,X1^2+Y1^2];
+%     T=inv(M*(inv(A.'*W*A)*M));
+%     Theta2=inv(Z.'*T*Z)*Z.'*T*h.';
+%     X2=sqrt(Theta2(1));
+%     Y2=sqrt(Theta2(2));
+%     M2=[2*X2,0,0;
+%        0,2*Y2,0;
+%        0,0,1];
+%     h2=[X2^2,Y2^2,X2^2+Y2^2];
+%     T2=inv(M2*(inv(A.'*W*A)*M2));
+%     Theta=inv(Z.'*T2*Z)*Z.'*T2*h2.';
+%     X=sqrt(Theta(1));
+%     Y=sqrt(Theta(2));
 % Cramer-Rao Lower Bound
-if Mode==5
+if Mode==10
     Fisher=zeros(2,2);
     Fisher(1,1)=(rx-x1)^2/(Var1*d1)+(rx-x2)^2/(Var2*d2)+(rx-x3)^2/(Var3*d3)+(rx-x4)^2/(Var4*d4);
     Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*d1)+(rx-x2)*(ry-y2)/(Var2*d2)+(rx-x3)*(ry-y3)/(Var3*d3)+(rx-x4)*(ry-y4)/(Var4*d4);
@@ -107,4 +140,6 @@ if Mode==5
     X=Fisher_inv(1,1);
     Y=Fisher_inv(2,2);
 end
+
+
 end
