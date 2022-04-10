@@ -84,7 +84,7 @@ if Mode==4
          0,1/(d2^2*Var2),0,0;
          0,0,1/(d3^2*Var3),0;
          0,0,0,1/(d4^2*Var4)];
-    Theta1=inv(A.'*A)*A.'*b;
+    Theta1=inv(A.'*W*A)*A.'*W*b;
     X1=Theta1(1);
     Y1=Theta1(2);
     M=[2*X1,0,0;
