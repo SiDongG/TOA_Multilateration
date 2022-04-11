@@ -25,6 +25,16 @@ d2=r2+Noise2;
 d3=r3+Noise3;
 d4=r4+Noise4;
 
+%Common Matrix
+A=[-2*x1, -2*y1, 1;
+   -2*x2, -2*y2, 1;
+   -2*x3, -2*y3, 1;
+   -2*x4, -2*y4, 1];
+
+b=[d1^2-x1^2-y1^2;
+   d2^2-x2^2-y2^2;
+   d3^2-x3^2-y3^2;
+   d4^2-x4^2-y4^2];
 % Substract Form LLS
 if Mode==1
     H=[x1-x2,y1-y2;
@@ -39,28 +49,12 @@ if Mode==1
 end
 % Direct Form LLS
 if Mode==2
-    A=[-2*x1, -2*y1, 1;
-       -2*x2, -2*y2, 1;
-       -2*x3, -2*y3, 1;
-       -2*x4, -2*y4, 1];
-    b=[d1^2-x1^2-y1^2;
-       d2^2-x2^2-y2^2;
-       d3^2-x3^2-y3^2;
-       d4^2-x4^2-y4^2];
     Theta=inv(A.'*A)*A.'*b;
     X=Theta(1);
     Y=Theta(2);
 end
 % WLLS
 if Mode==3
-    A=[-2*x1, -2*y1, 1;
-       -2*x2, -2*y2, 1;
-       -2*x3, -2*y3, 1;
-       -2*x4, -2*y4, 1];
-    b=[d1^2-x1^2-y1^2;
-       d2^2-x2^2-y2^2;
-       d3^2-x3^2-y3^2;
-       d4^2-x4^2-y4^2];
     W=(1/4)*[1/(d1^2*Var1),0,0,0;
          0,1/(d2^2*Var2),0,0;
          0,0,1/(d3^2*Var3),0;
@@ -71,15 +65,7 @@ if Mode==3
 end
 % 2-Step WLLS
 if Mode==4
-    b=[d1^2-x1^2-y1^2;
-       d2^2-x2^2-y2^2;
-       d3^2-x3^2-y3^2;
-       d4^2-x4^2-y4^2];
     Z=[1,0;0,1;1,1];
-    A=[-2*x1, -2*y1, 1;
-       -2*x2, -2*y2, 1;
-       -2*x3, -2*y3, 1;
-       -2*x4, -2*y4, 1];
     W=(1/4)*[1/(d1^2*Var1),0,0,0;
          0,1/(d2^2*Var2),0,0;
          0,0,1/(d3^2*Var3),0;
@@ -96,6 +82,18 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
+if Mode==5
+    W=(1/4)*[1/(d1^2*Var1),0,0,0;
+         0,1/(d2^2*Var2),0,0;
+         0,0,1/(d3^2*Var3),0;
+         0,0,0,1/(d4^2*Var4)];
+    P=[1,0,0;0,1,0;0,0,0];
+    q=[0;0;-1];
+    %Eigenvalue decomposition, V is diagonal matrix with evalues, U is
+    %evector matrix 
+    [V,U]=eig(inv(A.'*W*A)*P);
+end
+
 % if Mode==5
 %     b=[d1^2-x1^2-y1^2;
 %        d2^2-x2^2-y2^2;
