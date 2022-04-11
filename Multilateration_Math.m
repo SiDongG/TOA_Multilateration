@@ -91,7 +91,11 @@ if Mode==5
     q=[0;0;-1];
     %Eigenvalue decomposition, V is diagonal matrix with evalues, U is
     %evector matrix 
-    [V,U]=eig(inv(A.'*W*A)*P);
+    [U,V]=eig(inv(A.'*W*A)*P);
+    c=q.'*U;c1=c(1);c2=c(2);c3=c(3);
+    g=inv(U)*inv(A.'*W*A)*q;g1=g(1);g2=g(2);g3=g(3);
+    e=b.'*W*A*U;e1=e(1);e2=e(2);e3=e(3);
+    f=inv(U)*inv(A.'*W*A)*A.'*W*b;f1=f(1);f2=f(2);f3=f(3);
 end
 
 % if Mode==5

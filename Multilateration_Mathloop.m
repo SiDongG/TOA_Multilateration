@@ -1,4 +1,4 @@
-clear;clc;close all;
+%clear;clc;close all;
 SNR_List=[1e-4,1e-3,1e-2,1e-1,1e0,1e1,1e2,1e3,1e4,1e5];
 
 Error=zeros(6,length(SNR_List));
