@@ -174,15 +174,19 @@ end
 %     X=sqrt(Theta(1));
 %     Y=sqrt(Theta(2));
 % Cramer-Rao Lower Bound
-if Mode==10
+if Mode==6
     Fisher=zeros(2,2);
-    Fisher(1,1)=(rx-x1)^2/(Var1*d1)+(rx-x2)^2/(Var2*d2)+(rx-x3)^2/(Var3*d3)+(rx-x4)^2/(Var4*d4);
-    Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*d1)+(rx-x2)*(ry-y2)/(Var2*d2)+(rx-x3)*(ry-y3)/(Var3*d3)+(rx-x4)*(ry-y4)/(Var4*d4);
+    Fisher(1,1)=(rx-x1)^2/(Var1*r1)+(rx-x2)^2/(Var2*r2)+(rx-x3)^2/(Var3*r3)+(rx-x4)^2/(Var4*r4);
+    Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*r1)+(rx-x2)*(ry-y2)/(Var2*r2)+(rx-x3)*(ry-y3)/(Var3*r3)+(rx-x4)*(ry-y4)/(Var4*r4);
     Fisher(2,1)=Fisher(1,2);
-    Fisher(2,2)=(ry-y1)^2/(Var1*d1)+(ry-y2)^2/(Var2*d2)+(ry-y3)^2/(Var3*d3)+(ry-y4)^2/(Var4*d4);
+    Fisher(2,2)=(ry-y1)^2/(Var1*r1)+(ry-y2)^2/(Var2*r2)+(ry-y3)^2/(Var3*r3)+(ry-y4)^2/(Var4*r4);
     Fisher_inv=inv(Fisher);
     X=Fisher_inv(1,1);
     Y=Fisher_inv(2,2);
+    NoiseX=sqrt(X)*randn();
+    NoiseY=sqrt(Y)*randn();
+    X=rx+NoiseX;
+    Y=ry+NoiseY;
 end
 end
 
