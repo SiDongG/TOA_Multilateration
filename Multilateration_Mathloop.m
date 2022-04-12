@@ -2,8 +2,8 @@
 SNR_List=[1e-4,1e-3,1e-2,1e-1,1e0,1e1,1e2,1e3,1e4,1e5];
 
 Error=zeros(6,length(SNR_List));
-loop=2000;
-for Mode=1:4
+loop=100;
+for Mode=1:5
     
     disp(Mode)
     for v=1:length(SNR_List)
@@ -39,6 +39,8 @@ semilogy(-40:10:50,log10(Error(1,:)),'k-','LineWidth',1);
 semilogy(-40:10:50,log10(Error(2,:)),'g-','LineWidth',1);
 semilogy(-40:10:50,log10(Error(3,:)),'r-','LineWidth',1);
 semilogy(-40:10:50,log10(Error(4,:)),'b-','LineWidth',1);
+semilogy(-40:10:50,log10(Error(5,:)),'LineWidth',1);
+semilogy(-40:10:50,log10(Error(6,:)),'LineWidth',1);
 % plot(-40:10:50,log10(Error(1,:)),'k-','LineWidth',1);
 % plot(-40:10:50,log10(Error(2,:)),'g-','LineWidth',1);
 % plot(-40:10:50,log10(Error(3,:)),'r-','LineWidth',1);
@@ -46,4 +48,4 @@ semilogy(-40:10:50,log10(Error(4,:)),'b-','LineWidth',1);
 % plot(-40:10:50,log10(Error(6,:)),'LineWidth',1);
 
 
-legend('LLS1','LLS2','WLLS','2SWLLS','CRLB')
+legend('LLS1','LLS2','WLLS','2SWLLS','CWLLS','CRLB')
