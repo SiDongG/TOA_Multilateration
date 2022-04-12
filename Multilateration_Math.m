@@ -82,6 +82,7 @@ if Mode==4
     X=sqrt(Theta(1));
     Y=sqrt(Theta(2));
 end
+% Constrained WLLS
 if Mode==5
     W=(1/4)*[1/(d1^2*Var1),0,0,0;
          0,1/(d2^2*Var2),0,0;
@@ -103,9 +104,25 @@ if Mode==5
         0.5*m*e2*g2*y2/(1+m*y2)^2-0.5*m*e3*g3*y3/(1+m*y3)^2-...
         0.5*m*c2*f2*y2/(1+m*y2)^2-0.5*m*c3*f3*y3/(1+m*y3)^2+...
         0.25*m^2*c2*g2*y2/(1+m*y2)^2+0.25*m^2*c3*g3*y3/(1+m*y3)^2==0,m);
+    Estimation=zeros(3,1,5);
     for i=1:5
+        if imag(k(i))==0
+            Estimation(:,:,i)=inv(A.'*W*A+k(i)*P)*(A.'*W*b-0.5*k(i)*q);
+        end
     end
-    Theta=inv(A.'*W*A+n*P)*(A.'*W*b-0.5*n*q);
+    Minimum=1000;
+    for j=1:5
+        if Estimation(1,1,j)~=0
+            J=(A*Estimation(:,:,j)-b).'*W*(A*Estimation(:,:,j)-b);
+            if J<=Minimum
+                Minimum=J;
+                Min_index=j;
+            end
+        end
+    end
+    Theta=Estimation(:,:,Min_index);
+    X=Theta(1);
+    Y=Theta(2);
 end
 
 % if Mode==5
