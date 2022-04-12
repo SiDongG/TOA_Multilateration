@@ -92,10 +92,20 @@ if Mode==5
     %Eigenvalue decomposition, V is diagonal matrix with evalues, U is
     %evector matrix 
     [U,V]=eig(inv(A.'*W*A)*P);
+    y1=V(1,1);y2=V(2,2);y3=V(3,3);
     c=q.'*U;c1=c(1);c2=c(2);c3=c(3);
     g=inv(U)*inv(A.'*W*A)*q;g1=g(1);g2=g(2);g3=g(3);
     e=b.'*W*A*U;e1=e(1);e2=e(2);e3=e(3);
     f=inv(U)*inv(A.'*W*A)*A.'*W*b;f1=f(1);f2=f(2);f3=f(3);
+    syms m
+    k=vpasolve(c1*f1-0.5*m*c1*g1+(c2*f2)/(1+m*y2)+(c3*f3)/(1+m*y3)-0.5*m*(c2*g2)/(1+m*y2) ...
+        -0.5*m*(c3*g3)/(1+m*y3)+e2*f2*y2/(1+m*y2)^2+e3*f3*y3/(1+m*y3)^2- ...
+        0.5*m*e2*g2*y2/(1+m*y2)^2-0.5*m*e3*g3*y3/(1+m*y3)^2-...
+        0.5*m*c2*f2*y2/(1+m*y2)^2-0.5*m*c3*f3*y3/(1+m*y3)^2+...
+        0.25*m^2*c2*g2*y2/(1+m*y2)^2+0.25*m^2*c3*g3*y3/(1+m*y3)^2==0,m);
+    for i=1:5
+    end
+    Theta=inv(A.'*W*A+n*P)*(A.'*W*b-0.5*n*q);
 end
 
 % if Mode==5
@@ -142,6 +152,5 @@ if Mode==10
     X=Fisher_inv(1,1);
     Y=Fisher_inv(2,2);
 end
-
-
 end
+
