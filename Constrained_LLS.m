@@ -1,5 +1,5 @@
 
-rx=400;ry=600;SNR=1e3;
+rx=200;ry=600;SNR=1e5;
 
 x1=0;y1=0;
 x2=1000;y2=0;
@@ -55,3 +55,24 @@ k=vpasolve(c1*f1-0.5*m*c1*g1+(c2*f2)/(1+m*y2)+(c3*f3)/(1+m*y3)-0.5*m*(c2*g2)/(1+
     0.5*m*e2*g2*y2/(1+m*y2)^2-0.5*m*e3*g3*y3/(1+m*y3)^2-...
     0.5*m*c2*f2*y2/(1+m*y2)^2-0.5*m*c3*f3*y3/(1+m*y3)^2+...
     0.25*m^2*c2*g2*y2/(1+m*y2)^2+0.25*m^2*c3*g3*y3/(1+m*y3)^2==0,m);
+
+Estimation=zeros(3,1,5);
+for i=1:5
+    if imag(k(i))==0
+        Estimation(:,:,i)=inv(A.'*W*A+k(i)*P)*(A.'*W*b-0.5*k(i)*q);
+    end
+end
+Minimum=1000;
+for j=1:5
+    if Estimation(1,1,j)~=0
+        J=(A*Estimation(:,:,j)-b).'*W*(A*Estimation(:,:,j)-b);
+        if J<=Minimum
+            Minimum=J;
+            Min_index=j;
+        end
+    end
+end
+Theta=Estimation(:,:,Min_index);
+X=Theta(1)
+Y=Theta(2)
+
