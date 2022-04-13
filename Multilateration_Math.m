@@ -173,6 +173,7 @@ end
 %     Theta=inv(Z.'*T2*Z)*Z.'*T2*h2.';
 %     X=sqrt(Theta(1));
 %     Y=sqrt(Theta(2));
+
 % Cramer-Rao Lower Bound
 if Mode==6
     Fisher=zeros(2,2);
@@ -188,5 +189,11 @@ if Mode==6
     X=rx+NoiseX;
     Y=ry+NoiseY;
 end
+% Approximate Maximum Likelihood 
+if Mode==7
+
+
+end
+
 end
 
