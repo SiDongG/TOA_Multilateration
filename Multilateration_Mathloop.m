@@ -1,10 +1,10 @@
 %clear;clc;close all;
-SNR_List=[1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1e0,1e1,1e2,1e3];
+SNR_List=[1e-3,1e-2,1e-1,1e0,1e1,1e2,1e3,1e4];
 rx=300;
 ry=600;
-Error=zeros(6,length(SNR_List));
+Error=zeros(7,length(SNR_List));
 loop=10;
-for Mode=1:6
+for Mode=1:7
     
     disp(Mode)
     for v=1:length(SNR_List)
@@ -29,12 +29,13 @@ end
 
 figure;
 hold on; box on;
-semilogy(-60:10:30,log10(Error(1,:)),'k-','LineWidth',1);
-semilogy(-60:10:30,log10(Error(2,:)),'g-','LineWidth',1);
-semilogy(-60:10:30,log10(Error(3,:)),'r-','LineWidth',1);
-semilogy(-60:10:30,log10(Error(4,:)),'b-','LineWidth',1);
-semilogy(-60:10:30,log10(Error(5,:)),'LineWidth',1);
-semilogy(-60:10:30,log10(Error(6,:)),'LineWidth',1);
+semilogy(-30:10:40,log10(Error(1,:)),'k-','LineWidth',1);
+semilogy(-30:10:40,log10(Error(2,:)),'g-','LineWidth',1);
+semilogy(-30:10:40,log10(Error(3,:)),'r-','LineWidth',1);
+semilogy(-30:10:40,log10(Error(4,:)),'b-','LineWidth',1);
+semilogy(-30:10:40,log10(Error(5,:)),'LineWidth',1);
+semilogy(-30:10:40,log10(Error(6,:)),'LineWidth',1);
+semilogy(-30:10:40,log10(Error(7,:)),'LineWidth',1);
 % plot(-40:10:50,log10(Error(1,:)),'k-','LineWidth',1);
 % plot(-40:10:50,log10(Error(2,:)),'g-','LineWidth',1);
 % plot(-40:10:50,log10(Error(3,:)),'r-','LineWidth',1);
@@ -42,4 +43,4 @@ semilogy(-60:10:30,log10(Error(6,:)),'LineWidth',1);
 % plot(-40:10:50,log10(Error(6,:)),'LineWidth',1);
 
 
-legend('LLS1','LLS2','WLLS','2SWLLS','CWLLS','CRLB')
+legend('LLS1','LLS2','WLLS','2SWLLS','CWLLS','CRLB','New-Rap')
