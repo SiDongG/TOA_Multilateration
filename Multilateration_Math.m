@@ -83,7 +83,7 @@ if Mode==4
     Y=sqrt(Theta(2));
 end
 % Constrained WLLS
-if Mode==5
+if Mode==6
     W=(1/4)*[1/(d1^2*Var1),0,0,0;
          0,1/(d2^2*Var2),0,0;
          0,0,1/(d3^2*Var3),0;
@@ -175,7 +175,7 @@ end
 %     Y=sqrt(Theta(2));
 
 % Cramer-Rao Lower Bound
-if Mode==6
+if Mode==8
     Fisher=zeros(2,2);
     Fisher(1,1)=(rx-x1)^2/(Var1*r1^2)+(rx-x2)^2/(Var2*r2^2)+(rx-x3)^2/(Var3*r3^2)+(rx-x4)^2/(Var4*r4^2);
     Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*r1^2)+(rx-x2)*(ry-y2)/(Var2*r2^2)+(rx-x3)*(ry-y3)/(Var3*r3^2)+(rx-x4)*(ry-y4)/(Var4*r4^2);
@@ -184,10 +184,10 @@ if Mode==6
     Fisher_inv=inv(Fisher);
     X=Fisher_inv(1,1);
     Y=Fisher_inv(2,2);
-    NoiseX=sqrt(X)*randn();
-    NoiseY=sqrt(Y)*randn();
-    X=rx+NoiseX;
-    Y=ry+NoiseY;
+%     NoiseX=sqrt(X)*randn();
+%     NoiseY=sqrt(Y)*randn();
+%     X=rx+NoiseX;
+%     Y=ry+NoiseY;
 end
 % Approximate Maximum Likelihood 
 if Mode==9
@@ -227,7 +227,7 @@ if Mode==7
     X=X1;Y=Y1;
 end
 % Preliminary Grid Search
-if Mode==8
+if Mode==5
     W=(1/4)*[1/(d1^2*Var1),0,0,0;
          0,1/(d2^2*Var2),0,0;
          0,0,1/(d3^2*Var3),0;
