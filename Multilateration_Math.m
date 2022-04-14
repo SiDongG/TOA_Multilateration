@@ -177,10 +177,10 @@ end
 % Cramer-Rao Lower Bound
 if Mode==6
     Fisher=zeros(2,2);
-    Fisher(1,1)=(rx-x1)^2/(Var1*r1)+(rx-x2)^2/(Var2*r2)+(rx-x3)^2/(Var3*r3)+(rx-x4)^2/(Var4*r4);
-    Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*r1)+(rx-x2)*(ry-y2)/(Var2*r2)+(rx-x3)*(ry-y3)/(Var3*r3)+(rx-x4)*(ry-y4)/(Var4*r4);
+    Fisher(1,1)=(rx-x1)^2/(Var1*r1^2)+(rx-x2)^2/(Var2*r2^2)+(rx-x3)^2/(Var3*r3^2)+(rx-x4)^2/(Var4*r4^2);
+    Fisher(1,2)=(rx-x1)*(ry-y1)/(Var1*r1^2)+(rx-x2)*(ry-y2)/(Var2*r2^2)+(rx-x3)*(ry-y3)/(Var3*r3^2)+(rx-x4)*(ry-y4)/(Var4*r4^2);
     Fisher(2,1)=Fisher(1,2);
-    Fisher(2,2)=(ry-y1)^2/(Var1*r1)+(ry-y2)^2/(Var2*r2)+(ry-y3)^2/(Var3*r3)+(ry-y4)^2/(Var4*r4);
+    Fisher(2,2)=(ry-y1)^2/(Var1*r1^2)+(ry-y2)^2/(Var2*r2^2)+(ry-y3)^2/(Var3*r3^2)+(ry-y4)^2/(Var4*r4^2);
     Fisher_inv=inv(Fisher);
     X=Fisher_inv(1,1);
     Y=Fisher_inv(2,2);
@@ -190,16 +190,7 @@ if Mode==6
     Y=ry+NoiseY;
 end
 % Approximate Maximum Likelihood 
-if Mode==8
-    W=(1/4)*[1/(d1^2*Var1),0,0,0;
-         0,1/(d2^2*Var2),0,0;
-         0,0,1/(d3^2*Var3),0;
-         0,0,0,1/(d4^2*Var4)];
-    Theta=inv(A.'*W*A)*A.'*W*b;
-    X1=Theta(1);
-    Y1=Theta(2);
-    R1=Theta(3);
-
+if Mode==9
 end
 % Newton Raphson Method
 if Mode==7
@@ -214,20 +205,20 @@ if Mode==7
     Measurements=zeros(2,Loop);
     Theta1=[X1,Y1];
     for i=1:Loop
-        r11=sqrt((X1-x1)^2+(Y1-y1)^2);
-        r22=sqrt((X1-x2)^2+(Y1-y2)^2);
-        r33=sqrt((X1-x3)^2+(Y1-y3)^2);
-        r44=sqrt((X1-x4)^2+(Y1-y4)^2);
+        R1=sqrt((X1-x1)^2+(Y1-y1)^2);
+        R2=sqrt((X1-x2)^2+(Y1-y2)^2);
+        R3=sqrt((X1-x3)^2+(Y1-y3)^2);
+        R4=sqrt((X1-x4)^2+(Y1-y4)^2);
 %         J=[(X1-x1)^2/sqrt((X1-x1)^2+(Y1-y1)^2),(Y1-y1)^2/sqrt((X1-x1)^2+(Y1-y1)^2);
 %            (X1-x2)^2/sqrt((X1-x2)^2+(Y1-y2)^2),(Y1-y2)^2/sqrt((X1-x2)^2+(Y1-y2)^2);
 %            (X1-x3)^2/sqrt((X1-x3)^2+(Y1-y3)^2),(Y1-y3)^2/sqrt((X1-x3)^2+(Y1-y3)^2);
 %            (X1-x4)^2/sqrt((X1-x4)^2+(Y1-y4)^2),(Y1-y4)^2/sqrt((X1-x4)^2+(Y1-y4)^2)];
-        G=[(d1-r11)*(X1-x1)/r11+(d2-r22)*(X1-x2)/r22+(d3-r33)*(X1-x3)/r33+(d3-r44)*(X1-x4)/r44;
-           (d1-r11)*(Y1-y1)/r11+(d2-r22)*(Y1-y2)/r22+(d3-r33)*(Y1-y3)/r33+(d3-r44)*(Y1-y4)/r44];
-        H=[(d1*(Y1-y1)^2-r11^3)/r11^3+(d2*(Y1-y2)^2-r22^3)/r22^3+(d3*(Y1-y3)^2-r33^3)/r33^3+(d4*(Y1-y4)^2-r44^3)/r44^3,...
-           (d1-r11)*(X1-x1)*(Y1-y1)/r11^3+(d2-r22)*(X1-x2)*(Y1-y2)/r22^3+(d3-r33)*(X1-x3)*(Y1-y3)/r33^3+(d4-r44)*(X1-x4)*(Y1-y4)/r44^3;
-           (d1-r11)*(X1-x1)*(Y1-y1)/r11^3+(d2-r22)*(X1-x2)*(Y1-y2)/r22^3+(d3-r33)*(X1-x3)*(Y1-y3)/r33^3+(d4-r44)*(X1-x4)*(Y1-y4)/r44^3,...
-           (d1*(X1-x1)^2-r11^3)/r11^3+(d2*(X1-x2)^2-r22^3)/r22^3+(d3*(X1-x3)^2-r33^3)/r33^3+(d4*(X1-x4)^2-r44^3)/r44^3];
+        G=[(d1-R1)*(X1-x1)/R1+(d2-R2)*(X1-x2)/R2+(d3-R3)*(X1-x3)/R3+(d3-R4)*(X1-x4)/R4;
+           (d1-R1)*(Y1-y1)/R1+(d2-R2)*(Y1-y2)/R2+(d3-R3)*(Y1-y3)/R3+(d3-R4)*(Y1-y4)/R4];
+        H=[(d1*(Y1-y1)^2-R1^3)/R1^3+(d2*(Y1-y2)^2-R2^3)/R2^3+(d3*(Y1-y3)^2-R3^3)/R3^3+(d4*(Y1-y4)^2-R4^3)/R4^3,...
+           (d1-R1)*(X1-x1)*(Y1-y1)/R1^3+(d2-R2)*(X1-x2)*(Y1-y2)/R2^3+(d3-R3)*(X1-x3)*(Y1-y3)/R3^3+(d4-R4)*(X1-x4)*(Y1-y4)/R4^3;
+           (d1-R1)*(X1-x1)*(Y1-y1)/R1^3+(d2-R2)*(X1-x2)*(Y1-y2)/R2^3+(d3-R3)*(X1-x3)*(Y1-y3)/R3^3+(d4-R4)*(X1-x4)*(Y1-y4)/R4^3,...
+           (d1*(X1-x1)^2-R1^3)/R1^3+(d2*(X1-x2)^2-R2^3)/R2^3+(d3*(X1-x3)^2-R3^3)/R3^3+(d4*(X1-x4)^2-R4^3)/R4^3];
         Theta1=Theta1-inv(H)*G;
         X1=Theta1(1);Y1=Theta1(2);
         Measurements(1,i)=X1;
@@ -235,6 +226,30 @@ if Mode==7
     end
     X=X1;Y=Y1;
 end
-
+% Preliminary Grid Search
+if Mode==8
+    W=(1/4)*[1/(d1^2*Var1),0,0,0;
+         0,1/(d2^2*Var2),0,0;
+         0,0,1/(d3^2*Var3),0;
+         0,0,0,1/(d4^2*Var4)];
+    Theta1=inv(A.'*W*A)*A.'*W*b;
+    Range=100;Step=0.1;
+    X1=Theta1(1);
+    Y1=Theta1(2);
+    Data=zeros(Range*2/Step+1,Range*2/Step+1);
+    X_index=0;
+    for i=(X1-Range):Step:(X1+Range)
+        X_index=X_index+1;
+        Y_index=0;
+        for j=(Y1-Range):Step:(Y1+Range)
+            Y_index=Y_index+1;
+            Matrix=[d1-sqrt((i-x1)^2+(j-y1)^2);d2-sqrt((i-x2)^2+(j-y2)^2);d3-sqrt((i-x3)^2+(j-y3)^2);d4-sqrt((i-x4)^2+(j-y4)^2)];
+            Data(X_index,Y_index)=Matrix.'*Matrix;
+        end
+    end
+    [k,j]=find(Data==min(min(Data)));
+    X=X1-Range+k*Step;
+    Y=Y1-Range+j*Step;
+end
 end
 
