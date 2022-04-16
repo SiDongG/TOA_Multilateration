@@ -1,5 +1,5 @@
 %clear;clc;close all;
-SNRdb_range=0:5:45;
+SNRdb_range=30:4:50;
 SNR_List=10.^(SNRdb_range/10);
 rx=300;
 ry=600;
