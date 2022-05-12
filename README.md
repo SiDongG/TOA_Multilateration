@@ -20,3 +20,7 @@ Cramer-Rao Lower Bound
 Newton-Raphson Iteration Nonlinear Method: See Steven Kay's Estimation Theory 
 
 The variance of each estimator are plotted against CRLB at high SNR region 
+
+# Junk Branch
+
+Multipath characterizations and matlab testings 
